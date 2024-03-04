@@ -10,7 +10,8 @@ void mmm_init();
 void mmm_reset(double **);
 void mmm_freeup();
 void mmm_seq();
-void* mmm_par(void *);
+void *mmm_par_subtask(void *);
+void mmm_par();
 double mmm_verify();
 
 #endif /* MMM_H_ */
