@@ -95,13 +95,14 @@ void mmm_seq() {
  * 
  * All dot products in PAR_MATRIX are assigned a number between 0 and n^2 - 1 where
  * the 0th dot product is the one in the top left corner, and the n^2 -1st dot product is the one in the bottom right.
- * Their indexes increase going left to right and top to bottom (like the order in which one might read words on a page).
+ * Their indices increase going left to right and top to bottom (like the order in which one might read words on a page).
  * 
  * This function will fill in a bunch of the dot products starting at the given "first" dot product.
 */
 void *mmm_par_subtask(void *arg) {
 	// this is the first dot product that this thread will perform
 	int first = *((int*)arg);
+	// how many dot products this thread will perform:
 	int dotsPerThread = (size*size/num_threads) + 1;
 	// the first dot product that this thread WONT perform:
 	int last = first + dotsPerThread;
@@ -109,7 +110,7 @@ void *mmm_par_subtask(void *arg) {
 	int firstRow = first/size;
 	// the column of the first dot product:
 	int firstCol = first%size;
-	// the column of the last dot product:
+	// the column of the first dot product that we WONT perform:
 	int lastCol = last%size;
 	// the row of the last dot product
 	int lastRow = last/size;
@@ -118,10 +119,8 @@ void *mmm_par_subtask(void *arg) {
 		lastRow = size - 1;
 		lastCol = size;
 	}
-	printf("start  %d    end %d    firstRow %d   lastRow %d   firstCol %d    lastCol %d\n", first, last, firstRow, lastRow, firstCol, lastCol);
 	for (int i = firstRow; i <= lastRow; i++) {
 		for (int j = ((i == firstRow) ? firstCol : 0); j < ((i == lastRow) ? lastCol : size); j++) {
-			//printf("i: %d   j: %d\n", i,j);
 			// do the dot product for row i col j of PAR_MATRIX
 			double total = 0;
 			for (int k = 0; k < size; k++) {
